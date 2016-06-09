@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import net.arkalis.socialbooks.domain.Comentario;
 import net.arkalis.socialbooks.domain.Livro;
 import net.arkalis.socialbooks.services.LivrosService;
 
@@ -55,5 +56,57 @@ public class LivrosResource {
 		livroService.atualizar(livro);
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	@RequestMapping(value="/{id}/comentarios", method=RequestMethod.POST)
+	public ResponseEntity<Void> addComentario(@PathVariable("id") Long livroId, @RequestBody Comentario comentario) {
+		livroService.salvaComentario(livroId, comentario);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+		
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/{id}/comentarios", method=RequestMethod.GET)
+	public ResponseEntity<List<Comentario>> listaComentarios(@PathVariable("id") Long id){
+		List<Comentario> comentarios = livroService.listaComentario(id);
+		
+		return ResponseEntity.ok(comentarios);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
